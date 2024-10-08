@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VECTOR2D_HEADER_H
+#define VECTOR2D_HEADER_H
 
 #include <cmath>
 
@@ -35,20 +36,20 @@ struct Vector2d
 		}
 		return *this;
 	}
-
 	double len() { return sqrt(x_ * x_ + y_ * y_); }
-
 	Vector2d& operator*(double const& d)
 	{
 		x_ *= d;
 		y_ *= d;
 		return *this;
 	}
-
-	Vector2d direction()
+	Vector2d& direction()
 	{
 		double l = len();
-		if (l != 0) return *this / l;
+		Vector2d v = *this;
+		if (l != 0) return v / l;
 		return *this;
 	}
 };
+
+#endif

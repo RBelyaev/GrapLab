@@ -1,11 +1,9 @@
-#pragma once
+#ifndef GRAPH_HEDER_BMP_H_
+#define GRAPH_HEDER_BMP_H_
 
-#include <cstdint>
 #include <string>
 #include <vector>
 #include <fstream>
-#include <iostream>
-#include <stdint.h>
 
 #pragma pack(push, 1)
 struct FileHeader {
@@ -56,3 +54,4 @@ private:
 };
 
 
+#endif

@@ -1,7 +1,8 @@
 #include "BMP.h"
 
 
-void BMP::Read(std::string& filename) {
+void BMP::Read(std::string& filename) 
+{
     std::ifstream image(filename, std::ios::binary);
 
     if (!image.is_open()) 
@@ -29,9 +30,8 @@ void BMP::Write(std::string& filename)
     image.write(reinterpret_cast<char*>(&file_header_), sizeof(FileHeader));
     image.write(reinterpret_cast<char*>(&info_header_), sizeof(InfoHeader));
 
-    for (RGB& color : color_table_) {
+    for (RGB& color : color_table_) 
         image.write(reinterpret_cast<char*>(&color), sizeof(RGB));
-    }
 
     image.write(reinterpret_cast<char*>(data_.data()), data_.size());
 
@@ -48,7 +48,7 @@ void BMP::CreateColorTable()
     }
 }
 
-void BMP::Interpret(std::vector<std::vector<uint8_t>>& map) 
+void BMP::Interpret(std::vector<std::vector<uint8_t> >& map) 
 {
     data_.reserve(map.size() * map[0].size());
 

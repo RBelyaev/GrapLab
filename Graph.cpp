@@ -34,7 +34,7 @@ Vector2d Graph::fRep(double edge_len, Vector2d v1, Vector2d v2)
     if (len > 20 * edge_len)
         return Vector2d(0, 0);
     if (v.x_ == 0 && v.y_ == 0) 
-        return Vector2d(edge_len/2, edge_len/2); 
+        return v / len * edge_len/2;
 
     double scalar = edge_len * edge_len / v.len();
     return v.direction() * (-scalar); 
@@ -44,24 +44,8 @@ Vector2d Graph::fAttr(double edge_len, Vector2d v1, Vector2d v2)
 {
     
     Vector2d v = v2 - v1;
-    //double scalar = (v.x_ * v.x_ + v.y_ * v.y_) / (edge_len); 
     double scalar = v.len() - edge_len;
-    return v.direction() * scalar; // не забыть азделить на вес дл€ каждой вершины
-    /*
-    Vector v = v2 - v1;
-    double scalar = (edge_len * edge_len) / (v.x_ * v.x_ + v.y_ * v.y_);
-    return v.direction() * scalar; // не забыть азделить на вес дл€ каждой вершины
-    */
-
-    /*
-    Vector delta = v2 - v1;  // ¬ектор между двум€ вершинами
-    double dist = delta.len();  // –ассто€ние между вершинами
-
-    // —ила прит€жени€ пропорциональна рассто€нию^2 / k
-    double force = dist * dist / edge_len;
-
-    return delta.direction() * force;  // ѕрит€жение в направлении к другой вершине
-    */
+    return v.direction() * scalar;
 }
 
 void Graph::AlgorithmFrick(int iterations, std::vector<Vector2d>& coordinates, double edge_len)
@@ -84,26 +68,20 @@ void Graph::AlgorithmFrick(int iterations, std::vector<Vector2d>& coordinates, d
             for (j = i + 1; j < num_verteces_; j++)
             {
                 move = fRep(edge_len, coordinates[i], coordinates[j]);
-                //if(t > 10000) move = move * 3;
                 movement[i] = movement[i] + move;
                 movement[j] = movement[j] - move;
             }
         }
 
+        for (auto& edge : edges_)
+        {
 
-        //if (t < 10000)
-        //{
-            for (auto& edge : edges_)
-            {
-
-                i = edge.first;
-                j = edge.second;
-                move = fAttr(edge_len, coordinates[i], coordinates[j]);
-                movement[i] = movement[i] + move;
-                movement[j] = movement[j] - move;
-            }
-        //}
-        
+            i = edge.first;
+            j = edge.second;
+            move = fAttr(edge_len, coordinates[i], coordinates[j]);
+            movement[i] = movement[i] + move;
+            movement[j] = movement[j] - move;
+        }
         
         for (i = 0; i < num_verteces_; i++) 
         {
@@ -115,20 +93,15 @@ void Graph::AlgorithmFrick(int iterations, std::vector<Vector2d>& coordinates, d
         t++;
     }
 
-    
-    for (j = 0; j < 10; j++)
-    {
-        std::vector<Vector2d>(num_verteces_, Vector2d(0, 0)).swap(movement);
 
-        for (i = 0; i < num_verteces_ - 1; i++)
+    for (i = 0; i < num_verteces_ - 1; i++)
+    {
+        for (j = i + 1; j < num_verteces_; j++)
         {
-            for (j = i + 1; j < num_verteces_; j++)
-            {
-                move = fRep(edge_len, coordinates[i], coordinates[j]);
-                move = move * 3;
-                movement[i] = movement[i] + move;
-                movement[j] = movement[j] - move;
-            }
+            move = fRep(edge_len, coordinates[i], coordinates[j]);
+            move = move / 2;
+            coordinates[i] = coordinates[i] + move;
+            coordinates[j] = coordinates[j] - move;
         }
     }
     
@@ -211,7 +184,7 @@ void Graph::AddNumber(int num, Vector2d p, std::vector<std::vector<uint8_t> >& v
     BMP digit_img;
     for (auto& digit : number) 
     {
-        filename = "C:/Users/roman/Desktop/digits/" + std::string(1, digit) + ".bmp";
+        filename = "../digits/" + std::string(1, digit) + ".bmp";
         digit_img.Read(filename);
 
         unsigned int width = digit_img.info_header_.width;
@@ -262,7 +235,7 @@ void Graph::Print(int weight, int hight, int iterations, std::string& filename)
         coordinates.push_back(Vector2d(rand() % (weight), rand() % (hight)));
 
 
-    AlgorithmFrick(iterations, coordinates, edge_len); 
+    AlgorithmFrick(iterations, coordinates, edge_len);
 
     Vector2d min = coordinates[0];
     Vector2d max = coordinates[0];

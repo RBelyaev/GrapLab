@@ -1,15 +1,10 @@
-#pragma once
+#ifndef GRAPH_HEADER_H
+#define GRAPH_HEADER_H
 
-#include <iostream>
 #include <fstream>
-#include <vector>
 #include <map>
 #include <time.h>
-#include <cmath>
-#include <cstdint>
-#include <limits>
 #include <string>
-#include <stdint.h>
 #include "BMP.h"
 #include "Vector2d.h"
 
@@ -27,15 +22,15 @@ class Graph
 
 	void AlgorithmFrick(int iterations, std::vector<Vector2d>& coordinates, double edge_len);
 
-	void DrawEdges(std::vector<std::vector<uint8_t>>& vertex_map, std::vector<Vector2d>& coordinates);
+	void DrawEdges(std::vector<std::vector<uint8_t> >& vertex_map, std::vector<Vector2d>& coordinates);
 
-	void AddCircle(Vector2d p, std::vector<std::vector<uint8_t>>& vertex_map, unsigned int image_w, unsigned int image_h);
+	void AddCircle(Vector2d p, std::vector<std::vector<uint8_t> >& vertex_map, unsigned int image_w, unsigned int image_h);
 
-	void AddNumber(int num, Vector2d p, std::vector<std::vector<uint8_t>>& vertex_map);
+	void AddNumber(int num, Vector2d p, std::vector<std::vector<uint8_t> >& vertex_map);
 
-	void DrawVertices(std::vector<Vector2d>& coordinates, std::vector<std::vector<uint8_t>>& vertex_map, unsigned int image_w, unsigned int image_h);
+	void DrawVertices(std::vector<Vector2d>& coordinates, std::vector<std::vector<uint8_t> >& vertex_map, unsigned int image_w, unsigned int image_h);
 
-	void SaveTo(std::string& filename, std::vector<std::vector<uint8_t>>& vertex_map);
+	void SaveTo(std::string& filename, std::vector<std::vector<uint8_t> >& vertex_map);
 
 public:
 	explicit Graph(std::string path);
@@ -45,7 +40,4 @@ public:
 	void Print(int image_h, int image_w, int iteration, std::string& filename);
 };
 
-
-
-
-
+#endif
