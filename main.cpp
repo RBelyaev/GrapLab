@@ -4,12 +4,14 @@
 
 int main()
 {
+    std::string path;
 
-    std::string path = "../graph/11.txt";
-
+    std::cin >> path;
     Graph G(path);
-    path = "../prints/graph11.bmp";
-    G.Print(500, 500, 10005, path);
+    std::cin >> path;
+    int w, h, i;
+    std::cin >> w >> h >> i;
+    G.Print(w, h, i, path);
 
     return 0;
 }
